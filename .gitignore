@@ -6,3 +6,17 @@ phases.md
 .env
 .env.*
 !.env.example
+
+# Build output and dependencies
+node_modules/
+dist/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

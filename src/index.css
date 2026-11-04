@@ -1,0 +1,194 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+  --c-paper: #f7f4ec;
+  --c-surface: #fffdf8;
+  --c-surface-muted: #f0ece1;
+  --c-surface-sunken: #ebe5d7;
+  --c-ink: #18211e;
+  --c-ink-soft: #3d4742;
+  --c-muted: #626b65;
+  --c-line: #ded8c9;
+  --c-line-strong: #c2bba9;
+  --c-accent: #0d5c50;
+  --c-accent-hover: #094940;
+  --c-accent-soft: #e2efe9;
+  --c-accent-ink: #f7fbf9;
+  --c-danger: #9c332c;
+  --c-danger-soft: #f7e6e3;
+  --c-focus: #0d5c50;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --c-paper: #111512;
+  --c-surface: #171c19;
+  --c-surface-muted: #1d2420;
+  --c-surface-sunken: #222b26;
+  --c-ink: #f1f0e8;
+  --c-ink-soft: #d5d8d0;
+  --c-muted: #a4ada6;
+  --c-line: #2b332e;
+  --c-line-strong: #3d4942;
+  --c-accent: #6fc7b3;
+  --c-accent-hover: #92d7c6;
+  --c-accent-soft: #15332b;
+  --c-accent-ink: #0b1b16;
+  --c-danger: #e29a91;
+  --c-danger-soft: #351c19;
+  --c-focus: #92d7c6;
+}
+
+@theme inline {
+  --color-paper: var(--c-paper);
+  --color-surface: var(--c-surface);
+  --color-surface-muted: var(--c-surface-muted);
+  --color-surface-sunken: var(--c-surface-sunken);
+  --color-ink: var(--c-ink);
+  --color-ink-soft: var(--c-ink-soft);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-accent: var(--c-accent);
+  --color-accent-hover: var(--c-accent-hover);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-accent-ink: var(--c-accent-ink);
+  --color-danger: var(--c-danger);
+  --color-danger-soft: var(--c-danger-soft);
+  --color-focus: var(--c-focus);
+}
+
+@theme {
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+
+  --text-display: clamp(2.65rem, 6.2vw, 4.75rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.035em;
+  --text-title: clamp(2rem, 3.8vw, 3.1rem);
+  --text-title--line-height: 1.08;
+  --text-title--letter-spacing: -0.025em;
+  --text-subtitle: clamp(1.3rem, 2vw, 1.6rem);
+  --text-subtitle--line-height: 1.25;
+  --text-subtitle--letter-spacing: -0.015em;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: var(--c-paper);
+    color: var(--c-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--c-accent);
+    color: var(--c-accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--c-focus);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  .rule {
+    border-top: 1px solid var(--c-line);
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+  }
+}
+
+@keyframes certificate-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.demo-certificate {
+  animation: certificate-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.demo-caret {
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+
+.skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--c-surface-muted) 25%,
+    var(--c-surface-sunken) 40%,
+    var(--c-surface-muted) 55%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.7s linear infinite;
+}

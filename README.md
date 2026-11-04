@@ -26,13 +26,51 @@ Hashing makes a stolen database hard to read, but it does not make names secret.
 
 ## Project status
 
-Early development. The core flows and edge cases are planned, and the first build is in progress.
+Phase 1 is complete: the foundation, design system, landing page, and route stubs are in place. The organizer and student flows are being built next, so the forms and lookups on those pages are not connected to a backend yet.
 
-There is nothing to install or run yet. Setup instructions will be added once the first working version is deployed.
+## Running it locally
+
+You need Node.js 20 or newer.
+
+```bash
+npm install
+npm run dev
+```
+
+Open the URL that Vite prints, usually `http://localhost:5173`.
+
+### Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the local development server |
+| `npm run build` | Type-check and build for production into `dist/` |
+| `npm run preview` | Preview the production build locally |
+| `npm run typecheck` | Run TypeScript checks without building |
+
+## Design system
+
+The colours, type scale, spacing, and UI controls live on a single internal page at `/design`. It is for development and is not linked from the public navigation. The page is the quickest way to see how a button, form field, badge, or overlay should look and behave before using it in the product.
 
 ## How it's built
 
-A static frontend and a small serverless backend, with the certificates drawn in the student's browser. Everything is kept inside free hosting limits.
+A React and TypeScript frontend built with Vite, styled with Tailwind CSS and a small set of design tokens. Routing is handled by React Router. The production site is static, so it can be hosted for free.
+
+The interface uses warm paper tones, near-black ink, and one deep teal accent. Headings use Source Serif 4 and body text uses Public Sans. Dark mode, reduced motion, and keyboard navigation are supported throughout.
+
+The landing page and route stubs are built with performance in mind: no heavy client libraries, no stock imagery, and a small bundle.
+
+## Deployment
+
+Every push to `main` builds the site and publishes it to GitHub Pages through the workflow in `.github/workflows/deploy.yml`.
+
+To enable it for your own copy:
+
+1. Open the repository settings, then **Pages**.
+2. Set the source to **GitHub Actions**.
+3. Push to `main`, or run the workflow manually.
+
+The workflow builds with the repository name as the base path. If you fork the project under a different name, update the base path in `package.json` (`build:pages`).
 
 ## Contributing
 
