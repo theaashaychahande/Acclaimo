@@ -1,0 +1,7 @@
+# Local developer notes
+Dev.md
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
