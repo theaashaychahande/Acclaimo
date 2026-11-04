@@ -62,15 +62,7 @@ The landing page and route stubs are built with performance in mind: no heavy cl
 
 ## Deployment
 
-Every push to `main` builds the site and publishes it to GitHub Pages through the workflow in `.github/workflows/deploy.yml`.
-
-To enable it for your own copy:
-
-1. Open the repository settings, then **Pages**.
-2. Set the source to **GitHub Actions**.
-3. Push to `main`, or run the workflow manually.
-
-The workflow builds with the repository name as the base path. If you fork the project under a different name, update the base path in `package.json` (`build:pages`).
+`npm run build` produces a static site in `dist/`. Serve that folder from any static host. Because routing is handled in the browser, configure the host to fall back to `index.html` for unknown paths.
 
 ## Contributing
 

@@ -83,10 +83,8 @@ function RouteEffects() {
 }
 
 export function App() {
-  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-
   return (
-    <BrowserRouter basename={base || undefined}>
+    <BrowserRouter>
       <RouteEffects />
       <Routes>
         <Route element={<AppLayout />}>
