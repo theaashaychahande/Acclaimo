@@ -24,8 +24,8 @@ const columns = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-surface">
-      <div className="container-page py-12 sm:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+      <div className="container-page py-16 lg:py-24">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div className="max-w-xs">
             <Wordmark />
             <p className="mt-4 text-sm leading-relaxed text-muted">
@@ -38,7 +38,7 @@ export function SiteFooter() {
               <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
                 {column.title}
               </h2>
-              <ul className="mt-2 space-y-1">
+              <ul className="mt-4 space-y-2">
                 {column.links.map((link) => (
                   <li key={link.to}>
                     <Link
@@ -55,7 +55,7 @@ export function SiteFooter() {
 
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Project</h2>
-            <ul className="mt-2 space-y-1">
+            <ul className="mt-4 space-y-2">
               <li>
                 <a
                   href="https://github.com/theaashaychahande/Acclaimo"
@@ -81,7 +81,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-line pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Aashay Chahande. Acclaimo is free to use.</p>
           <p>Acclaimo distributes certificates. It does not verify identity.</p>
         </div>

@@ -4,7 +4,7 @@ import { CursorBox, Download, LinkIcon, Phone, Spreadsheet } from "../ui/Icons";
 
 function MiniPanel({ children }: { children: ReactNode }) {
   return (
-    <div aria-hidden="true" className="mt-5 rounded-[6px] border border-line bg-surface p-3">
+    <div aria-hidden="true" className="mt-6 rounded-[6px] border border-line bg-surface p-4">
       {children}
     </div>
   );
@@ -171,14 +171,14 @@ function StepGrid({
       {steps.map((step, index) => {
         const Icon = step.icon;
         return (
-          <div key={step.title} className="border-t border-line pt-5">
+          <div key={step.title} className="border-t border-line pt-6">
             <div className="flex items-center justify-between">
               <span className="font-serif text-lg tabular-nums text-accent">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <Icon className="size-[18px] text-muted" />
             </div>
-            <h3 className="mt-3 text-[1.02rem] font-semibold leading-snug">{step.title}</h3>
+            <h3 className="mt-4 text-[1.02rem] font-semibold leading-snug">{step.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
             <MiniPanel>{step.preview}</MiniPanel>
           </div>
@@ -190,14 +190,14 @@ function StepGrid({
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="border-y border-line bg-surface py-16 sm:py-20">
+    <section id="how-it-works" className="border-y border-line bg-surface py-16 lg:py-24">
       <div className="container-page">
         <div className="max-w-2xl">
           <p className="eyebrow">How it works</p>
-          <h2 className="mt-3 font-serif text-title font-semibold text-balance">
+          <h2 className="mt-4 font-serif text-title font-semibold text-balance">
             Three steps for you. Two for them.
           </h2>
-          <p className="mt-4 text-[1.02rem] leading-relaxed text-muted">
+          <p className="mt-12 text-[1.02rem] leading-relaxed text-muted">
             The setup happens once. After that, students only need the link and the name they
             registered with.
           </p>
@@ -207,16 +207,16 @@ export function HowItWorks() {
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
             For organizers
           </p>
-          <div className="mt-5">
+          <div className="mt-6">
             <StepGrid steps={organizerSteps} columns="md:grid-cols-3" />
           </div>
         </div>
 
-        <div className="mt-14">
+        <div className="mt-16">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
             For students
           </p>
-          <div className="mt-5">
+          <div className="mt-6">
             <StepGrid steps={studentSteps} columns="md:grid-cols-2" />
           </div>
         </div>

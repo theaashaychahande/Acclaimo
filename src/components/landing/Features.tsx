@@ -41,21 +41,21 @@ const sampleCategories = [
 
 export function Features() {
   return (
-    <section className="py-16 sm:py-20" aria-labelledby="features-heading">
+    <section className="py-16 lg:py-24" aria-labelledby="features-heading">
       <div className="container-page">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <p className="eyebrow">What makes it different</p>
-            <h2 id="features-heading" className="mt-3 font-serif text-title font-semibold text-balance">
+            <h2 id="features-heading" className="mt-4 font-serif text-title font-semibold text-balance">
               Made for the way departments actually work.
             </h2>
-            <p className="mt-4 max-w-md text-[1.02rem] leading-relaxed text-muted">
+            <p className="mt-12 max-w-md text-[1.02rem] leading-relaxed text-muted">
               Most certificate tools ask for money, an account, or a week of manual work. Acclaimo
               asks for a spreadsheet, a design, and one link.
             </p>
             <Link
               to="/#how-it-works"
-              className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
+              className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-accent underline-offset-4 hover:underline"
             >
               Walk through the setup
               <ArrowRight className="size-4" />
@@ -66,37 +66,37 @@ export function Features() {
             {features.map((feature, index) => (
               <li
                 key={feature.title}
-                className="grid grid-cols-[2.1rem_1fr] gap-3 border-t border-line py-5 last:border-b"
+                className="grid grid-cols-[2.1rem_1fr] gap-4 border-t border-line py-6 last:border-b"
               >
-                <span className="pt-0.5 font-serif text-sm tabular-nums text-accent">
+                <span className="font-serif text-sm tabular-nums text-accent">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div>
                   <h3 className="font-semibold leading-snug">{feature.title}</h3>
-                  <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted">{feature.body}</p>
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">{feature.body}</p>
                 </div>
               </li>
             ))}
           </ol>
         </div>
 
-        <div className="mt-16 grid gap-10 border-t border-line pt-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="mt-16 grid gap-12 border-t border-line pt-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           <div>
             <p className="eyebrow">One list, several designs</p>
-            <h3 className="mt-3 font-serif text-subtitle font-semibold">
+            <h3 className="mt-4 font-serif text-subtitle font-semibold">
               Everyone gets the right certificate.
             </h3>
-            <p className="mt-3 max-w-lg text-[0.98rem] leading-relaxed text-muted">
+            <p className="mt-12 max-w-lg text-[0.98rem] leading-relaxed text-muted">
               Add a Category column to the sheet and map each value to a design. A winner receives
               the winner design with their position printed. A participant receives the plain one.
               Blank categories fall back to your default.
             </p>
-            <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted">
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted">
               No second upload. No sorting files into folders by hand.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {sampleCategories.map((sample) => (
               <figure key={sample.label}>
                 <CertificateCard
@@ -111,28 +111,28 @@ export function Features() {
           </div>
         </div>
 
-        <div className="mt-16 grid gap-10 border-t border-line pt-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="mt-16 grid gap-12 border-t border-line pt-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           <div className="lg:order-2">
             <p className="eyebrow">Design once</p>
-            <h3 className="mt-3 font-serif text-subtitle font-semibold">
+            <h3 className="mt-4 font-serif text-subtitle font-semibold">
               Place the words. Not the pixels.
             </h3>
-            <p className="mt-3 max-w-lg text-[0.98rem] leading-relaxed text-muted">
+            <p className="mt-12 max-w-lg text-[0.98rem] leading-relaxed text-muted">
               Drop the name box where it belongs and set the font, size, colour, and alignment. Add
               a second box for position text if your event has it. Both scale with the template, so
               one design works at any size.
             </p>
-            <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted">
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted">
               Long names shrink and wrap instead of spilling out of the box.
             </p>
           </div>
 
-          <div aria-hidden="true" className="rounded-[8px] border border-line bg-surface p-3 sm:p-4">
+          <div aria-hidden="true" className="rounded-[8px] border border-line bg-surface p-4">
             <div className="flex items-center justify-between border-b border-line pb-2 text-[0.6rem] uppercase tracking-[0.1em] text-muted">
               <span>Designer</span>
               <span>Winner category</span>
             </div>
-            <div className="mt-3 grid grid-cols-[1fr_auto] gap-3">
+            <div className="mt-4 grid grid-cols-[1fr_auto] gap-4">
               <div className="relative aspect-[1.414/1] overflow-hidden rounded-[4px] border border-line bg-[#fcf8ed]">
                 <div className="absolute inset-2 border border-[#0d5c50]/20" />
                 <p className="absolute inset-x-0 top-[17%] text-center font-serif text-[0.62rem] text-[#1b2923]">
@@ -152,7 +152,7 @@ export function Features() {
                   ["Align", "Center"],
                   ["Case", "As typed"],
                 ].map(([label, value]) => (
-                  <div key={label} className="rounded-[3px] border border-line bg-paper px-2 py-1.5">
+                  <div key={label} className="rounded-[3px] border border-line bg-paper px-2 py-2">
                     <p className="text-[0.48rem] uppercase tracking-[0.08em] text-muted">{label}</p>
                     <p className="mt-0.5 text-[0.55rem] text-ink-soft">{value}</p>
                   </div>

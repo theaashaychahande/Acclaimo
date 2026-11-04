@@ -38,7 +38,7 @@ export function LandingPage() {
     <>
       <Hero />
       <div className="border-y border-line bg-surface">
-        <div className="container-page flex flex-col gap-1.5 py-4 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-page flex flex-col gap-2 py-4 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>Built for college departments and clubs. Free to use.</p>
           <p>No ads. No student accounts. No folder of PDFs.</p>
         </div>

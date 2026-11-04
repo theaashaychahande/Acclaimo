@@ -45,24 +45,24 @@ const questions = [
 
 export function Faq() {
   return (
-    <section id="faq" className="py-16 sm:py-20">
-      <div className="container-page grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+    <section id="faq" className="py-16 lg:py-24">
+      <div className="container-page grid gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
         <div>
           <p className="eyebrow">Questions</p>
-          <h2 className="mt-3 font-serif text-title font-semibold">Before you share the link.</h2>
-          <p className="mt-4 max-w-sm text-[0.98rem] leading-relaxed text-muted">
+          <h2 className="mt-4 font-serif text-title font-semibold">Before you share the link.</h2>
+          <p className="mt-12 max-w-sm text-[0.98rem] leading-relaxed text-muted">
             The short answers to the things organizers and students ask most often.
           </p>
         </div>
 
         <div>
           {questions.map((item) => (
-            <details key={item.question} className="group border-t border-line py-4 last:border-b">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
+            <details key={item.question} className="group border-t border-line last:border-b">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
                 <span className="text-[0.98rem] font-medium">{item.question}</span>
                 <Plus className="size-4 shrink-0 text-muted transition-transform duration-200 group-open:rotate-45" />
               </summary>
-              <p className="mt-3 max-w-2xl pr-8 text-sm leading-relaxed text-muted">{item.answer}</p>
+              <p className="mt-4 max-w-2xl pb-4 pr-8 text-sm leading-relaxed text-muted">{item.answer}</p>
             </details>
           ))}
         </div>

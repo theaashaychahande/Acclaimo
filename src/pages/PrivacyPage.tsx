@@ -13,7 +13,7 @@ export function PrivacyPage() {
         <div className="mt-8 space-y-8">
           <section className="border-t border-line pt-6">
             <h2 className="font-serif text-2xl font-semibold">The short version</h2>
-            <p className="mt-3 text-[0.98rem] leading-relaxed text-muted">
+            <p className="mt-4 text-[0.98rem] leading-relaxed text-muted">
               Student names are normalized and hashed in the browser before anything is uploaded.
               The database stores those hashes, not a readable list of names. Category labels and
               position text stay readable because they are part of the certificate, not personal
@@ -24,7 +24,7 @@ export function PrivacyPage() {
 
           <section className="border-t border-line pt-6">
             <h2 className="font-serif text-2xl font-semibold">What is stored</h2>
-            <ul className="mt-3 space-y-2 text-[0.98rem] leading-relaxed text-muted">
+            <ul className="mt-4 space-y-2 text-[0.98rem] leading-relaxed text-muted">
               <li>Organization name, department or club, and an optional public contact.</li>
               <li>A hash of the organizer&rsquo;s edit key. The plain key is never stored.</li>
               <li>Event details, certificate templates, and design settings.</li>
@@ -35,7 +35,7 @@ export function PrivacyPage() {
 
           <section className="border-t border-line pt-6">
             <h2 className="font-serif text-2xl font-semibold">What is not stored</h2>
-            <ul className="mt-3 space-y-2 text-[0.98rem] leading-relaxed text-muted">
+            <ul className="mt-4 space-y-2 text-[0.98rem] leading-relaxed text-muted">
               <li>Plain student names.</li>
               <li>Student emails, phone numbers, or passwords.</li>
               <li>Student accounts or profiles.</li>
@@ -45,7 +45,7 @@ export function PrivacyPage() {
 
           <section className="border-t border-line pt-6">
             <h2 className="font-serif text-2xl font-semibold">Who can see what</h2>
-            <p className="mt-3 text-[0.98rem] leading-relaxed text-muted">
+            <p className="mt-4 text-[0.98rem] leading-relaxed text-muted">
               An organizer can only reach their own organization. One organization cannot read
               another&rsquo;s events, participants, or templates. The platform admin can see
               organization names and counts, never participant data. The public cannot read the
@@ -55,7 +55,7 @@ export function PrivacyPage() {
 
           <section className="border-t border-line pt-6">
             <h2 className="font-serif text-2xl font-semibold">Deletion and expiry</h2>
-            <p className="mt-3 text-[0.98rem] leading-relaxed text-muted">
+            <p className="mt-4 text-[0.98rem] leading-relaxed text-muted">
               Organizers can delete a participant list, an event, or the whole organization. Deleting
               removes the related hashes, categories, and templates. Events expire on the date the
               organizer chooses. Expired events are cleaned up automatically after 90 days.
@@ -64,7 +64,7 @@ export function PrivacyPage() {
 
           <section className="border-t border-line pt-6">
             <h2 className="font-serif text-2xl font-semibold">An honest limitation</h2>
-            <p className="mt-3 text-[0.98rem] leading-relaxed text-muted">
+            <p className="mt-4 text-[0.98rem] leading-relaxed text-muted">
               Hashing protects a database if it is leaked. It does not make a name secret. Someone
               who knows a student&rsquo;s name can still look up that certificate. Acclaimo is a
               distribution tool, not an identity or attendance verification service.
@@ -73,7 +73,7 @@ export function PrivacyPage() {
 
           <section className="border-t border-line pt-6">
             <h2 className="font-serif text-2xl font-semibold">Questions</h2>
-            <p className="mt-3 text-[0.98rem] leading-relaxed text-muted">
+            <p className="mt-4 text-[0.98rem] leading-relaxed text-muted">
               Open an issue on the{" "}
               <a
                 href="https://github.com/theaashaychahande/Acclaimo/issues"

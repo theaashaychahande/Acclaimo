@@ -25,7 +25,7 @@ export function CreatePage() {
         }
       >
         <p>Before you start, have two things ready:</p>
-        <ul className="mt-3 space-y-2">
+        <ul className="mt-4 space-y-2">
           <li>A participant list as CSV or Excel.</li>
           <li>A certificate design with an empty space for the name.</li>
         </ul>

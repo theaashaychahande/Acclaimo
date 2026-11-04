@@ -54,13 +54,13 @@ export function CertificateDemo() {
   }, [reduced]);
 
   return (
-    <div className="mx-auto w-full max-w-[30rem]">
-      <div className="rounded-[10px] border border-line bg-surface p-4 sm:p-5">
-        <div className="flex items-center justify-between border-b border-line pb-3">
+    <div className="w-full">
+      <div className="rounded-[10px] border border-line bg-surface p-6">
+        <div className="flex items-center justify-between border-b border-line pb-4">
           <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">
             Student view
           </p>
-          <p className="inline-flex items-center gap-1.5 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-accent">
+          <p className="inline-flex items-center gap-2 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-accent">
             <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
             Live preview
           </p>
@@ -68,7 +68,7 @@ export function CertificateDemo() {
 
         <div className="mt-4">
           <p className="text-xs font-medium text-ink-soft">Your full name</p>
-          <div className="mt-1.5 flex min-h-12 items-center justify-between gap-3 rounded-md border border-line-strong bg-paper px-3.5">
+          <div className="mt-2 flex min-h-12 items-center justify-between gap-4 rounded-md border border-line-strong bg-paper px-4">
             <p className="truncate text-[0.95rem]">
               {typed}
               {!reduced ? (
@@ -81,16 +81,17 @@ export function CertificateDemo() {
 
         <div className="mt-4">
           {revealed ? (
-            <div className="demo-certificate">
+            <div className="demo-certificate aspect-[3/2] w-full overflow-hidden rounded-[5px]">
               <CertificateCard
                 name={fullName}
                 event="MECHMERISE 2026"
                 position="Winner"
                 category="winner"
+                fill
               />
             </div>
           ) : (
-            <div className="skeleton aspect-[1.414/1] w-full rounded-[5px]" aria-hidden="true" />
+            <div className="skeleton aspect-[3/2] w-full rounded-[5px]" aria-hidden="true" />
           )}
         </div>
 
@@ -99,18 +100,18 @@ export function CertificateDemo() {
           Download PDF
         </Button>
 
-        <p className="mt-2 min-h-4 text-center text-xs text-muted" aria-live="polite">
+        <p className="mt-4 min-h-4 text-center text-xs text-muted" aria-live="polite">
           {note
             ? "Preview only. Downloads work once your event is live."
             : revealed
               ? "Aarohi's certificate is ready."
               : "Looking up your name…"}
         </p>
-      </div>
 
-      <p className="mt-3 text-center text-xs leading-relaxed text-muted">
-        The certificate is drawn on the student&rsquo;s phone, not on a server.
-      </p>
+        <p className="mt-4 text-center text-xs leading-relaxed text-muted">
+          The certificate is drawn on the student&rsquo;s phone, not on a server.
+        </p>
+      </div>
     </div>
   );
 }

@@ -33,15 +33,15 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper">
-      <div className="container-page flex h-[4.5rem] items-center justify-between gap-3">
+      <div className="container-page flex h-16 items-center justify-between gap-2">
         <Wordmark onClick={() => setMenuOpen(false)} />
 
-        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-2 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.to}
               to={link.to}
-              className="inline-flex min-h-11 items-center rounded-md px-3 text-sm text-ink-soft transition-colors hover:bg-surface-muted hover:text-ink"
+              className="inline-flex min-h-11 items-center rounded-md px-4 text-sm text-ink-soft transition-colors hover:bg-surface-muted hover:text-ink"
             >
               {link.label}
             </Link>
@@ -57,14 +57,6 @@ export function SiteHeader() {
               Organizer login
             </Link>
           </div>
-          <Link
-            to="/create"
-            aria-label="Create your organization"
-            className={cn(buttonClasses({ size: "sm" }), "px-3.5 sm:px-4")}
-          >
-            <span className="sm:hidden">Create</span>
-            <span className="hidden sm:inline">Create your organization</span>
-          </Link>
           <button
             type="button"
             className="grid size-11 place-items-center rounded-md border border-line text-ink transition-colors hover:bg-surface-muted lg:hidden"
@@ -75,12 +67,20 @@ export function SiteHeader() {
           >
             {menuOpen ? <Close className="size-5" /> : <Menu className="size-5" />}
           </button>
+          <Link
+            to="/create"
+            aria-label="Create your organization"
+            className={cn(buttonClasses({ size: "sm" }), "px-4")}
+          >
+            <span className="sm:hidden">Create</span>
+            <span className="hidden sm:inline">Create your organization</span>
+          </Link>
         </div>
       </div>
 
       {menuOpen ? (
         <div id="mobile-menu" className="border-t border-line bg-surface lg:hidden">
-          <nav aria-label="Mobile" className="container-page flex flex-col py-3">
+          <nav aria-label="Mobile" className="container-page flex flex-col py-4">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -98,7 +98,7 @@ export function SiteHeader() {
             >
               Organizer login
             </Link>
-            <div className="mt-2 flex items-center justify-between border-t border-line pt-3">
+            <div className="mt-2 flex items-center justify-between border-t border-line pt-4">
               <span className="px-2 text-sm text-muted">Appearance</span>
               <ThemeToggle />
             </div>

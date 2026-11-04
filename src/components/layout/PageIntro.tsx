@@ -12,15 +12,15 @@ export function PageIntro({
   children?: ReactNode;
 }) {
   return (
-    <div className="container-page py-12 sm:py-16 lg:py-20">
+    <div className="container-page py-16 lg:py-24">
       <div className="max-w-3xl">
         <p className="eyebrow">{eyebrow}</p>
-        <h1 className="mt-3 font-serif text-title font-semibold text-balance">{title}</h1>
+        <h1 className="mt-4 font-serif text-title font-semibold text-balance">{title}</h1>
         {intro ? (
-          <p className="mt-4 max-w-2xl text-[1.02rem] leading-relaxed text-muted">{intro}</p>
+          <p className="mt-12 max-w-2xl text-[1.02rem] leading-relaxed text-muted">{intro}</p>
         ) : null}
       </div>
-      {children ? <div className="mt-10">{children}</div> : null}
+      {children ? <div className="mt-12">{children}</div> : null}
     </div>
   );
 }
@@ -41,8 +41,8 @@ export function NoticePanel({
         In progress
       </p>
       <h2 className="mt-4 font-serif text-2xl font-semibold">{title}</h2>
-      <div className="mt-3 text-[0.95rem] leading-relaxed text-muted">{children}</div>
-      {action ? <div className="mt-6 flex flex-wrap gap-3">{action}</div> : null}
+      <div className="mt-4 text-[0.95rem] leading-relaxed text-muted">{children}</div>
+      {action ? <div className="mt-6 flex flex-wrap gap-4">{action}</div> : null}
     </div>
   );
 }

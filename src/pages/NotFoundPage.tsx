@@ -10,7 +10,7 @@ export function NotFoundPage() {
       title="This page isn't here."
       intro="The link may be wrong, or the page may have moved. Nothing is broken on your side."
     >
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <div className="flex flex-col gap-4 sm:flex-row">
         <Link to="/" className={buttonClasses({ size: "sm" })}>
           Back to home
           <ArrowRight className="size-4" />

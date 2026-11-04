@@ -41,10 +41,10 @@ export function HelpPage() {
     >
       <div className="grid gap-8 md:grid-cols-3">
         {guides.map((guide, index) => (
-          <section key={guide.title} className="border-t border-line pt-5">
+          <section key={guide.title} className="border-t border-line pt-6">
             <p className="font-serif text-lg text-accent">{String(index + 1).padStart(2, "0")}</p>
             <h2 className="mt-2 text-[1.02rem] font-semibold">{guide.title}</h2>
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-4 space-y-2">
               {guide.points.map((point) => (
                 <li key={point} className="flex gap-2 text-sm leading-relaxed text-muted">
                   <span className="mt-2 size-1 shrink-0 rounded-full bg-line-strong" aria-hidden="true" />
@@ -59,7 +59,7 @@ export function HelpPage() {
       <div className="mt-12 rounded-[8px] border border-line bg-surface p-6 sm:flex sm:items-center sm:justify-between">
         <div>
           <h2 className="font-serif text-xl font-semibold">Still stuck?</h2>
-          <p className="mt-1 text-sm text-muted">
+          <p className="mt-2 text-sm text-muted">
             Open an issue on GitHub and describe what you were trying to do.
           </p>
         </div>

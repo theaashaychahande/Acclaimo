@@ -7,6 +7,8 @@ type CertificateCardProps = {
   position?: string;
   category?: "participant" | "winner" | "runner";
   className?: string;
+  /** Fill a fixed-aspect parent instead of using the certificate's own A4 ratio. */
+  fill?: boolean;
 };
 
 const accents = {
@@ -21,6 +23,7 @@ export function CertificateCard({
   position,
   category = "participant",
   className,
+  fill = false,
 }: CertificateCardProps) {
   const accent = accents[category];
   const label = position
@@ -33,7 +36,8 @@ export function CertificateCard({
       aria-label={label}
       style={{ "--cert-accent": accent } as CSSProperties}
       className={cn(
-        "@container relative aspect-[1.414/1] w-full overflow-hidden rounded-[5px] bg-[#fcf8ed] text-[#1b2923]",
+        "@container relative w-full overflow-hidden rounded-[5px] bg-[#fcf8ed] text-[#1b2923]",
+        fill ? "h-full" : "aspect-[1.414/1]",
         className,
       )}
     >

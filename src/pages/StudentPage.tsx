@@ -15,7 +15,7 @@ export function StudentPage() {
           The link ID <span className="font-mono text-sm text-ink">{linkId ?? "unknown"}</span> is
           valid, but participant records do not exist until an organizer publishes an event.
         </p>
-        <p className="mt-3">
+        <p className="mt-4">
           In the finished flow, a student types the name they registered with, sees the right
           certificate for their category, and downloads it as a PDF or image.
         </p>

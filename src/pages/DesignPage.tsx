@@ -87,7 +87,7 @@ function DemoSection({
   children: ReactNode;
 }) {
   return (
-    <section className="border-t border-line pt-10">
+    <section className="border-t border-line pt-12">
       <h2 className="font-serif text-2xl font-semibold">{title}</h2>
       {note ? <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{note}</p> : null}
       <div className="mt-6">{children}</div>
@@ -99,7 +99,7 @@ function Badge({ children, tone = "neutral" }: { children: ReactNode; tone?: "ne
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",
+        "inline-flex items-center gap-2 rounded-full border px-2 py-2 text-xs font-medium",
         tone === "neutral" && "border-line bg-surface text-ink-soft",
         tone === "accent" && "border-accent/30 bg-accent-soft text-accent",
         tone === "danger" && "border-danger/30 bg-danger-soft text-danger",
@@ -161,21 +161,21 @@ export function DesignPage() {
       title="The pieces Acclaimo is built from."
       intro="Colours, type, spacing, and controls in one place. This page is for development; it is not linked from the public navigation."
     >
-      <div className="space-y-10">
+      <div className="space-y-12">
         <DemoSection
           title="Colour"
           note="Warm paper, near-black ink, and one deep teal accent. Dark mode is a separate palette, not an inversion. Every value is a CSS variable."
         >
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {colors.map(([name, variable, usage]) => (
-              <div key={name} className="rounded-[6px] border border-line bg-surface p-3">
+              <div key={name} className="rounded-[6px] border border-line bg-surface p-4">
                 <div
                   className="h-14 rounded-[3px] border border-line"
                   style={{ background: `var(${variable})` }}
                 />
-                <p className="mt-2.5 text-sm font-medium">{name}</p>
-                <p className="mt-0.5 font-mono text-[0.68rem] text-muted">{variable}</p>
-                <p className="mt-1 text-xs text-muted">{usage}</p>
+                <p className="mt-2 text-sm font-medium">{name}</p>
+                <p className="font-mono text-[0.68rem] text-muted">{variable}</p>
+                <p className="mt-2 text-xs text-muted">{usage}</p>
               </div>
             ))}
           </div>
@@ -195,7 +195,7 @@ export function DesignPage() {
         <DemoSection title="Spacing" note="A 4px grid. Components use the same steps for padding, gaps, and vertical rhythm.">
           <div className="space-y-2">
             {spacing.map((step) => (
-              <div key={step} className="flex items-center gap-3">
+              <div key={step} className="flex items-center gap-4">
                 <span className="w-12 text-right font-mono text-xs text-muted">{step}</span>
                 <div className="h-2 rounded-sm bg-accent-soft" style={{ width: `${step * 4}px` }} />
                 <span className="text-xs text-muted">{step * 4}px</span>
@@ -205,14 +205,14 @@ export function DesignPage() {
         </DemoSection>
 
         <DemoSection title="Buttons" note="44px minimum height on the controls people use with a thumb. Rounded corners stay small and quiet.">
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-4">
             <Button>Create your organization</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="ghost">Ghost</Button>
             <Button variant="destructive">Delete event</Button>
             <Button disabled>Disabled</Button>
           </div>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
+          <div className="mt-4 flex flex-wrap items-center gap-4">
             <Button size="sm">Small</Button>
             <Button size="md">Medium</Button>
             <Button size="lg">Large</Button>
@@ -230,20 +230,20 @@ export function DesignPage() {
               </label>
               <input
                 id="demo-org"
-                className="mt-1.5 w-full rounded-md border border-line-strong bg-surface px-3 py-2.5 text-base placeholder:text-muted/70"
+                className="mt-2 w-full rounded-md border border-line-strong bg-surface px-4 py-4 text-base placeholder:text-muted/70"
                 placeholder="Mechanical Engineering Department"
               />
-              <p className="mt-1.5 text-xs text-muted">This appears on the student page.</p>
+              <p className="mt-2 text-xs text-muted">This appears on the student page.</p>
             </div>
 
             <div>
               <label htmlFor="demo-category" className="text-sm font-medium">
                 Category
               </label>
-              <div className="relative mt-1.5">
+              <div className="relative mt-2">
                 <select
                   id="demo-category"
-                  className="w-full appearance-none rounded-md border border-line-strong bg-surface px-3 py-2.5 pr-9 text-base"
+                  className="w-full appearance-none rounded-md border border-line-strong bg-surface px-4 py-4 pr-8 text-base"
                   defaultValue="winner"
                 >
                   <option value="participant">Participant</option>
@@ -262,10 +262,10 @@ export function DesignPage() {
                 id="demo-key"
                 aria-invalid="true"
                 aria-describedby="demo-key-error"
-                className="mt-1.5 w-full rounded-md border border-danger bg-surface px-3 py-2.5 text-base"
+                className="mt-2 w-full rounded-md border border-danger bg-surface px-4 py-4 text-base"
                 defaultValue="accl-8f2"
               />
-              <p id="demo-key-error" className="mt-1.5 text-xs text-danger">
+              <p id="demo-key-error" className="mt-2 text-xs text-danger">
                 That key did not work. Check for extra spaces and try again.
               </p>
             </div>
@@ -277,16 +277,16 @@ export function DesignPage() {
               <textarea
                 id="demo-note"
                 rows={3}
-                className="mt-1.5 w-full rounded-md border border-line-strong bg-surface px-3 py-2.5 text-base placeholder:text-muted/70"
+                className="mt-2 w-full rounded-md border border-line-strong bg-surface px-4 py-4 text-base placeholder:text-muted/70"
                 placeholder="Optional"
               />
             </div>
 
-            <label className="flex items-start gap-2.5 text-sm">
-              <input type="checkbox" className="mt-0.5 size-4 accent-[var(--c-accent)]" />
+            <label className="flex items-start gap-2 text-sm">
+              <input type="checkbox" className="size-4 translate-y-0.5 accent-[var(--c-accent)]" />
               <span>
                 I saved my edit key
-                <span className="mt-0.5 block text-xs text-muted">
+                <span className="mt-2 block text-xs text-muted">
                   It will not be shown again.
                 </span>
               </span>
@@ -307,7 +307,7 @@ export function DesignPage() {
 
         <DemoSection title="Tabs" note="Arrow keys move between tabs. The panel stays in the same place so the page does not jump.">
           <div className="max-w-xl">
-            <div role="tablist" aria-label="Event setup" className="flex gap-1 border-b border-line">
+            <div role="tablist" aria-label="Event setup" className="flex gap-2 border-b border-line">
               {tabNames.map((name, index) => (
                 <button
                   key={name}
@@ -319,7 +319,7 @@ export function DesignPage() {
                   onClick={() => setTab(index)}
                   onKeyDown={(event) => onTabKeyDown(event, index)}
                   className={cn(
-                    "-mb-px inline-flex min-h-11 items-center border-b-2 px-3 text-sm font-medium",
+                    "-mb-px inline-flex min-h-11 items-center border-b-2 px-4 text-sm font-medium",
                     tab === index
                       ? "border-accent text-ink"
                       : "border-transparent text-muted hover:text-ink",
@@ -353,7 +353,7 @@ export function DesignPage() {
             <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-muted">
               Create your first event, add a participant list, and share one link.
             </p>
-            <Button size="sm" className="mt-5">
+            <Button size="sm" className="mt-6">
               Create an event
             </Button>
           </div>
@@ -362,7 +362,7 @@ export function DesignPage() {
         <DemoSection title="Skeleton" note="Loading states keep the same shape as the content that replaces them.">
           <div className="grid max-w-xl gap-4 sm:grid-cols-[1fr_1.5fr]">
             <div className="skeleton aspect-[1.414/1] rounded-[5px]" />
-            <div className="space-y-3 py-2">
+            <div className="space-y-4 py-2">
               <div className="skeleton h-3 w-1/3 rounded-sm" />
               <div className="skeleton h-5 w-4/5 rounded-sm" />
               <div className="skeleton h-3 w-full rounded-sm" />
@@ -377,7 +377,7 @@ export function DesignPage() {
             {icons.map(([label, Icon]) => (
               <div
                 key={label}
-                className="flex flex-col items-center gap-1.5 rounded-[6px] border border-line bg-surface px-2 py-3 text-center"
+                className="flex flex-col items-center gap-2 rounded-[6px] border border-line bg-surface px-2 py-4 text-center"
               >
                 <Icon className="size-5 text-ink-soft" />
                 <span className="text-[0.65rem] leading-tight text-muted">{label}</span>
@@ -387,7 +387,7 @@ export function DesignPage() {
         </DemoSection>
 
         <DemoSection title="Overlays" note="A toast for feedback, a modal for a decision, and a bottom sheet for mobile controls.">
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-4">
             <Button variant="secondary" onClick={() => setToast(true)}>
               Show toast
             </Button>
@@ -441,7 +441,7 @@ export function DesignPage() {
       {toast ? (
         <div
           role="status"
-          className="fixed bottom-5 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 rounded-md border border-line bg-ink px-4 py-3 text-sm text-paper sm:left-auto sm:right-5 sm:translate-x-0"
+          className="fixed bottom-6 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 rounded-md border border-line bg-ink px-4 py-4 text-sm text-paper sm:left-auto sm:right-6 sm:translate-x-0"
         >
           List saved. 428 participants are ready.
         </div>
@@ -453,7 +453,7 @@ export function DesignPage() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="sheet-title"
-            className="w-full rounded-t-[14px] border-t border-line bg-surface p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]"
+            className="w-full rounded-t-[14px] border-t border-line bg-surface p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line-strong" aria-hidden="true" />
@@ -474,7 +474,7 @@ export function DesignPage() {
               On a phone, the certificate preview stays on top and the controls slide up from the
               bottom like this.
             </p>
-            <div className="mt-5 grid grid-cols-2 gap-3">
+            <div className="mt-6 grid grid-cols-2 gap-4">
               <Button variant="secondary" size="sm">
                 Choose font
               </Button>
