@@ -18,6 +18,10 @@ Hashing makes a stolen database hard to read, but it does not make names secret.
 
 ## Project status
 
-Phase 1 is complete: the foundation, design system, landing page, and route stubs are in place. The organizer and student flows are being built next, so the forms and lookups on those pages are not connected to a backend yet.
+Phase 1 is complete: the foundation, design system, landing page, and route stubs are in place.
 
 Phase 2 is complete: the shared normalization and hashing core is tested, and a locked-down Supabase backend foundation is in place. Names are normalized (unicode NFC → trim → lowercase → letters/marks/whitespace only → collapse spaces → sort → join), hashed with a per-organization salt, and protected by row-level security and narrow rate-limited RPCs. Participants are stored only as hashes; categories and position text are readable.
+
+The organizer and student flows now work end to end against the live database: create an organization, save the one-time edit key, log in, create events and categories, add participants with optional position text, publish, share the link, look up a name, and download the certificate. Pausing, extending, and deleting an event, plus the download and not-found counters, are wired too.
+
+Phase 4 (spreadsheet import) and Phase 5 (template upload and the position designer) are still to come. Until then, participants are added through a paste box and certificates use a built-in design. Phase 7 (admin tools, retention, and launch hardening) comes after those.
