@@ -29,18 +29,24 @@ export function NoticePanel({
   title,
   children,
   action,
+  statusLabel,
 }: {
   title: string;
   children: ReactNode;
   action?: ReactNode;
+  statusLabel?: string;
 }) {
   return (
     <div className="max-w-2xl rounded-[8px] border border-line bg-surface p-6 sm:p-8">
-      <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
-        <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
-        In progress
-      </p>
-      <h2 className="mt-4 font-serif text-2xl font-semibold">{title}</h2>
+      {statusLabel ? (
+        <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+          <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
+          {statusLabel}
+        </p>
+      ) : null}
+      <h2 className={`font-serif text-2xl font-semibold ${statusLabel ? "mt-4" : ""}`}>
+        {title}
+      </h2>
       <div className="mt-4 text-[0.95rem] leading-relaxed text-muted">{children}</div>
       {action ? <div className="mt-6 flex flex-wrap gap-4">{action}</div> : null}
     </div>
