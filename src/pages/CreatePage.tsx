@@ -27,6 +27,12 @@ export function CreatePage() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    const trimmedName = form.name.trim();
+    const trimmedDepartment = form.department.trim();
+    if (trimmedName.length < 2 || trimmedDepartment.length < 2) {
+      setSubmitting(false);
+      return;
+    }
     generateEditKey();
     setSubmitting(false);
   };
@@ -34,7 +40,6 @@ export function CreatePage() {
   const buttonProps = {
     variant: "primary" as const,
     size: "lg" as const,
-    disabled: submitting,
   };
 
   return (
@@ -104,7 +109,7 @@ export function CreatePage() {
 
           <button
             type="submit"
-            {...buttonProps}
+            disabled={submitting}
             className={buttonClasses({
               variant: buttonProps.variant,
               size: buttonProps.size,
