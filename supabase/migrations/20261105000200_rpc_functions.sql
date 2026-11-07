@@ -396,7 +396,6 @@ declare
   v_live_events integer;
   v_has_duplicate boolean;
   v_matches jsonb;
-  v_template_missing boolean;
 begin
   if p_link_id is null or p_link_id !~ '^[a-z2-7]{10}$' then
     return jsonb_build_object('status', 'not_found');
@@ -536,16 +535,8 @@ begin
     return jsonb_build_object('status', 'not_found');
   end if;
 
-  select exists (
-    select 1
-      from jsonb_array_elements(v_matches) as match
-     where match #>> '{category,template_path}' is null
-  ) into v_template_missing;
-
-  if v_template_missing then
-    return jsonb_build_object('status', 'error', 'code', 'template_missing');
-  end if;
-
+  -- A category without an uploaded template is allowed: the browser draws the
+  -- built-in design instead, so the student flow still completes.
   update public.events
      set searches = searches + 1
    where organization_id = v_org.id
@@ -587,6 +578,7 @@ begin
         'department_or_club', o.department_or_club,
         'public_contact', o.public_contact,
         'logo_path', o.logo_path,
+        'salt', o.salt,
         'status', o.status,
         'created_at', o.created_at
       ),
