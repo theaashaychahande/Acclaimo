@@ -12,7 +12,7 @@ export function LoginPage() {
     e.preventDefault();
     const trimmed = editKey.trim().toUpperCase().replace(/\s-/g, "");
     // In production this would verify the edit key via Supabase RPC
-    // For now, accept any non-empty key as valid
+    // For now, accept any non-empty key with reasonable length
     if (trimmed.length >= 8 && trimmed.length <= 32) {
       // Simulate successful login - in production would call verify_edit_key RPC
       window.location.href = "/dashboard";
@@ -85,6 +85,7 @@ export function LoginPage() {
           </div>
           <button
             type="submit"
+            disabled={rateLimited}
             className={buttonClasses({
               variant: "primary",
               size: "lg",
