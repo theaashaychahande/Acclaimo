@@ -1,14 +1,8 @@
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { NoticePanel, PageIntro } from "../components/layout/PageIntro";
 
 export function StudentPage() {
-  const { linkId } = useParams();
   const [name, setName] = useState("");
-
-  useEffect(() => {
-    // placeholder: organization data loaded via linkId
-  }, [linkId]);
 
   return (
     <PageIntro
