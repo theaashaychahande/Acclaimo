@@ -16,6 +16,9 @@ import {
   createCategory,
   deleteCategory,
   fetchDashboard,
+  renameCategory,
+  reorderCategories,
+  setDefaultCategory,
   signTemplate,
   updateCategory,
   uploadTemplate,
@@ -246,6 +249,7 @@ function DesignerWorkspace({
   const [samplePosition, setSamplePosition] = useState("Winner");
   const [templateWarning, setTemplateWarning] = useState<string | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
+  const [categoryBusy, setCategoryBusy] = useState(false);
 
   const fileInput = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -645,6 +649,122 @@ function DesignerWorkspace({
     }
   };
 
+  const renameActiveCategory = async (label: string) => {
+    if (!category || categoryBusy) return;
+
+    const clean = label.trim();
+
+    if (!clean || clean === category.label) return;
+
+    setCategoryBusy(true);
+
+    try {
+      const response = await renameCategory({
+        editKeyHash,
+        categoryId: category.id,
+        label: clean,
+      });
+
+      if (response.status === "invalid_key") {
+        onSessionExpired();
+        return;
+      }
+
+      if (response.status !== "ok") {
+        setNotice({ tone: "error", text: categoryMessage(response.code) });
+        return;
+      }
+
+      await onRefresh();
+      setNotice({ tone: "ok", text: "Category renamed." });
+    } catch (error) {
+      setNotice({
+        tone: "error",
+        text: describeError(error, "The category was not renamed."),
+      });
+    } finally {
+      setCategoryBusy(false);
+    }
+  };
+
+  const makeDefaultCategory = async () => {
+    if (!category || categoryBusy || event.default_category_id === category.id) return;
+
+    setCategoryBusy(true);
+
+    try {
+      const response = await setDefaultCategory({
+        editKeyHash,
+        categoryId: category.id,
+      });
+
+      if (response.status === "invalid_key") {
+        onSessionExpired();
+        return;
+      }
+
+      if (response.status !== "ok") {
+        setNotice({ tone: "error", text: categoryMessage(response.code) });
+        return;
+      }
+
+      await onRefresh();
+      setNotice({
+        tone: "ok",
+        text: `"${category.label}" is now the default category.`,
+      });
+    } catch (error) {
+      setNotice({
+        tone: "error",
+        text: describeError(error, "The default category was not changed."),
+      });
+    } finally {
+      setCategoryBusy(false);
+    }
+  };
+
+  const moveCategory = async (direction: -1 | 1) => {
+    if (!category || categoryBusy) return;
+
+    const index = event.categories.findIndex((entry) => entry.id === category.id);
+    const target = index + direction;
+
+    if (index < 0 || target < 0 || target >= event.categories.length) return;
+
+    const ids = event.categories.map((entry) => entry.id);
+    [ids[index], ids[target]] = [ids[target], ids[index]];
+
+    setCategoryBusy(true);
+
+    try {
+      const response = await reorderCategories({
+        editKeyHash,
+        eventId: event.id,
+        categoryIds: ids,
+      });
+
+      if (response.status === "invalid_key") {
+        onSessionExpired();
+        return;
+      }
+
+      if (response.status !== "ok") {
+        setNotice({ tone: "error", text: categoryMessage(response.code) });
+        return;
+      }
+
+      await onRefresh();
+      setNotice({ tone: "ok", text: "Category order saved." });
+    } catch (error) {
+      setNotice({
+        tone: "error",
+        text: describeError(error, "The category order was not saved."),
+      });
+    } finally {
+      setCategoryBusy(false);
+    }
+  };
+
   if (!category) {
     return (
       <div className="space-y-6">
@@ -765,6 +885,86 @@ function DesignerWorkspace({
           Delete category
         </button>
       </div>
+
+      <details className="rounded-[8px] border border-line bg-surface p-4">
+        <summary className="cursor-pointer text-sm font-medium text-ink">
+          Category settings
+        </summary>
+
+        <form
+          className="mt-3 flex flex-wrap items-end gap-2"
+          onSubmit={(formEvent) => {
+            formEvent.preventDefault();
+            const value = new FormData(formEvent.currentTarget).get("label");
+            if (typeof value === "string") void renameActiveCategory(value);
+          }}
+        >
+          <label className="min-w-[12rem] flex-1 text-sm">
+            <span className="font-medium text-ink">Category name</span>
+            <input
+              key={category.id}
+              name="label"
+              defaultValue={category.label}
+              maxLength={40}
+              className={inputClass}
+            />
+          </label>
+          <button
+            type="submit"
+            disabled={categoryBusy}
+            className={buttonClasses({ variant: "secondary", size: "sm" })}
+          >
+            Save name
+          </button>
+        </form>
+
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          {event.default_category_id === category.id ? (
+            <span className="inline-flex items-center gap-1 rounded-full border border-accent/30 bg-accent-soft px-3 py-1 text-xs font-medium text-accent">
+              <Check className="size-3.5" aria-hidden="true" />
+              Default category
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => void makeDefaultCategory()}
+              disabled={categoryBusy}
+              className={buttonClasses({ variant: "secondary", size: "sm" })}
+            >
+              Make default
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => void moveCategory(-1)}
+            disabled={
+              categoryBusy ||
+              event.categories.findIndex((entry) => entry.id === category.id) === 0
+            }
+            className={buttonClasses({ variant: "ghost", size: "sm" })}
+          >
+            Move earlier
+          </button>
+          <button
+            type="button"
+            onClick={() => void moveCategory(1)}
+            disabled={
+              categoryBusy ||
+              event.categories.findIndex((entry) => entry.id === category.id) ===
+                event.categories.length - 1
+            }
+            className={buttonClasses({ variant: "ghost", size: "sm" })}
+          >
+            Move later
+          </button>
+        </div>
+
+        <p className="mt-2 text-xs text-muted">
+          Rows with a blank category use the default. The tab order here is the order students
+          see when they have more than one certificate.
+        </p>
+      </details>
 
       {missingTemplates > 0 ? (
         <p className="rounded-[8px] border border-line bg-surface-muted px-4 py-3 text-sm text-muted">
@@ -1427,6 +1627,12 @@ function categoryMessage(code: string): string {
       return "The default category cannot be deleted.";
     case "invalid_category_label":
       return "Give the category a name between 1 and 40 characters.";
+    case "category_label_taken":
+      return "Another category already uses that name.";
+    case "category_not_found":
+      return "That category no longer exists. Reload the page.";
+    case "invalid_category_order":
+      return "The category order was rejected. Reload and try again.";
     case "event_not_found":
       return "That event no longer exists.";
     default:

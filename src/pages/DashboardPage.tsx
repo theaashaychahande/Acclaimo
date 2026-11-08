@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoticePanel, PageIntro } from "../components/layout/PageIntro";
+import { ParticipantImport } from "../components/participants/ParticipantImport";
+import { ParticipantLookup } from "../components/participants/ParticipantLookup";
 import { buttonClasses } from "../components/ui/Button";
 import { Check, CursorBox, LinkIcon, Plus, Send } from "../components/ui/Icons";
 import {
@@ -143,7 +145,7 @@ export function DashboardPage() {
     <PageIntro
       eyebrow={organization.department_or_club}
       title={organization.name}
-      intro="Create an event, paste your participant list, then publish the link you will share with students."
+      intro="Import a spreadsheet or paste a quick list, design the certificate, then publish the link you will share with students."
     >
       <div className="space-y-8">
         {notice ? (
@@ -672,6 +674,13 @@ function ParticipantPanel({
 }) {
   const [text, setText] = useState("");
   const [saving, setSaving] = useState(false);
+  const [pasteCategoryId, setPasteCategoryId] = useState(categoryId);
+
+  useEffect(() => {
+    if (!event.categories.some((category) => category.id === pasteCategoryId)) {
+      setPasteCategoryId(categoryId);
+    }
+  }, [event.categories, categoryId, pasteCategoryId]);
 
   const add = async () => {
     if (saving) return;
@@ -703,7 +712,7 @@ function ParticipantPanel({
 
         rows.push({
           name_hash: await hashName(salt, rawName.trim()),
-          category_id: categoryId,
+          category_id: pasteCategoryId,
           identifier_hash: null,
           position_text: rawPosition?.trim() || null,
           duplicate_flag: false,
@@ -766,40 +775,77 @@ function ParticipantPanel({
   return (
     <details className="mt-4 rounded-[8px] border border-line bg-surface-muted p-4">
       <summary className="cursor-pointer text-sm font-medium text-ink">
-        Add participants
+        Participants and spreadsheet import
       </summary>
 
-      <p className="mt-3 text-sm text-muted">
-        One person per line. Add a comma and the position text if you want it printed, for
-        example <code className="font-mono text-xs">Aashay Chahande, Winner</code>.
-      </p>
-
-      <textarea
-        value={text}
-        onChange={(event) => setText(event.target.value)}
-        rows={5}
-        placeholder={"Aashay Chahande, Winner\nRiya Sharma, Participant"}
-        className="mt-3 w-full rounded-md border border-line bg-surface px-3 py-2 font-mono text-sm text-ink placeholder:text-muted"
+      <ParticipantImport
+        event={event}
+        salt={salt}
+        editKeyHash={editKeyHash}
+        onChanged={onChanged}
+        onNotice={onNotice}
       />
 
-      <div className="mt-3 flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => void add()}
-          disabled={saving}
-          className={buttonClasses({ variant: "primary", size: "sm" })}
-        >
-          {saving ? "Saving…" : "Add names"}
-        </button>
-        <button
-          type="button"
-          onClick={() => void clear()}
-          disabled={saving}
-          className={buttonClasses({ variant: "ghost", size: "sm" })}
-        >
-          Clear list
-        </button>
+      <div className="mt-5 border-t border-line pt-4">
+        <h3 className="text-sm font-semibold text-ink">Paste a quick list</h3>
+        <p className="mt-1 text-sm text-muted">
+          One person per line. Add a comma and the position text if you want it printed, for
+          example <code className="font-mono text-xs">Aashay Chahande, Winner</code>.
+        </p>
+
+        {event.categories.length > 1 ? (
+          <label className="mt-3 block text-sm">
+            <span className="font-medium text-ink">Add these names to</span>
+            <select
+              value={pasteCategoryId}
+              onChange={(changeEvent) => setPasteCategoryId(changeEvent.target.value)}
+              className="mt-1 w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-base sm:max-w-xs"
+            >
+              {event.categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.label}
+                  {category.id === categoryId ? " (default)" : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
+
+        <textarea
+          value={text}
+          onChange={(event) => setText(event.target.value)}
+          rows={5}
+          placeholder={"Aashay Chahande, Winner\nRiya Sharma, Participant"}
+          className="mt-3 w-full rounded-md border border-line bg-surface px-3 py-2 font-mono text-sm text-ink placeholder:text-muted"
+        />
+
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => void add()}
+            disabled={saving}
+            className={buttonClasses({ variant: "primary", size: "sm" })}
+          >
+            {saving ? "Saving…" : "Add names"}
+          </button>
+          <button
+            type="button"
+            onClick={() => void clear()}
+            disabled={saving}
+            className={buttonClasses({ variant: "ghost", size: "sm" })}
+          >
+            Clear list
+          </button>
+        </div>
       </div>
+
+      <ParticipantLookup
+        event={event}
+        salt={salt}
+        editKeyHash={editKeyHash}
+        onChanged={onChanged}
+        onNotice={onNotice}
+      />
     </details>
   );
 }
