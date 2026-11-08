@@ -10,6 +10,7 @@ import {
   type AdminOrganization,
 } from "../lib/api";
 import { generateEditKey, hashEditKey } from "../shared";
+import { describeError } from "../lib/errors";
 
 type Notice = { tone: "ok" | "error"; text: string };
 
@@ -70,11 +71,7 @@ export function AdminPage() {
 
       setError("The admin check could not run. Try again.");
     } catch (caught) {
-      setError(
-        caught instanceof Error && caught.message
-          ? caught.message
-          : "The admin check could not run. Try again.",
-      );
+      setError(describeError(caught, "The admin check could not run. Try again."));
     } finally {
       setLoading(false);
     }

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { NoticePanel, PageIntro } from "../components/layout/PageIntro";
 import { buttonClasses } from "../components/ui/Button";
 import { verifyEditKey } from "../lib/api";
+import { describeError } from "../lib/errors";
 import { normalizeEditKey } from "../shared";
 import { hashEditKey } from "../shared";
 import { saveSession } from "../lib/session";
@@ -65,11 +66,7 @@ export function LoginPage() {
 
       setError("That key did not work. Check for extra spaces and try again.");
     } catch (caught) {
-      setError(
-        caught instanceof Error && caught.message
-          ? caught.message
-          : "We could not check that key right now. Please try again.",
-      );
+      setError(describeError(caught, "We could not check that key right now. Please try again."));
     } finally {
       setSubmitting(false);
     }

@@ -5,6 +5,7 @@ import { buttonClasses } from "../components/ui/Button";
 import { ArrowRight, Check, Download } from "../components/ui/Icons";
 import { createOrganization } from "../lib/api";
 import { downloadBlob } from "../lib/certificate";
+import { describeError } from "../lib/errors";
 import { saveSession } from "../lib/session";
 import {
   generateEditKey,
@@ -108,9 +109,10 @@ export function CreatePage() {
         return;
       } catch (caught) {
         setError(
-          caught instanceof Error && caught.message
-            ? caught.message
-            : "Your organization was not created. Nothing was changed.",
+          describeError(
+            caught,
+            "Your organization was not created. Nothing was changed.",
+          ),
         );
         setSubmitting(false);
         return;

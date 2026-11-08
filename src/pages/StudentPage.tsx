@@ -13,6 +13,7 @@ import {
   type PublicOrgResponse,
 } from "../lib/api";
 import { hashName, hashNameWithIdentifier } from "../shared/hash";
+import { describeError } from "../lib/errors";
 import {
   canvasToBlob,
   downloadBlob,
@@ -40,9 +41,7 @@ type LookupState =
   | { kind: "error"; message: string };
 
 function friendlyError(error: unknown): string {
-  if (error instanceof Error && error.message) return error.message;
-
-  return "Something went wrong on our side. Please try again.";
+  return describeError(error, "Something went wrong on our side. Please try again.");
 }
 
 export function StudentPage() {
