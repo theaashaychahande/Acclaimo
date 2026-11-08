@@ -332,3 +332,78 @@ export async function deleteEvent(input: {
     p_event_id: input.eventId,
   });
 }
+
+/* ------------------------------------------------------------------ */
+/* Admin                                                               */
+/* ------------------------------------------------------------------ */
+
+export type AdminOrganization = {
+  id: string;
+  name: string;
+  department_or_club: string;
+  link_id: string;
+  status: "active" | "disabled";
+  created_at: string;
+  event_count: number;
+  category_count: number;
+  participant_count: number;
+  lookup_count: number;
+  not_found_count: number;
+};
+
+export type AdminError =
+  | { status: "invalid_secret" }
+  | { status: "rate_limited"; retry_after_seconds: number }
+  | { status: "error"; code: string };
+
+export type AdminListResponse =
+  | { status: "ok"; organizations: AdminOrganization[] }
+  | AdminError;
+
+/**
+ * The admin secret is kept in memory by the page and sent only with these
+ * calls. It is never written to localStorage or the URL.
+ */
+export async function adminListOrganizations(secret: string): Promise<AdminListResponse> {
+  return callRpc<AdminListResponse>("admin_list_organizations", {
+    p_secret: secret,
+    p_device_id: getDeviceId(),
+  });
+}
+
+export async function adminSetOrganizationStatus(input: {
+  secret: string;
+  organizationId: string;
+  status: "active" | "disabled";
+}): Promise<{ status: "ok" } | AdminError> {
+  return callRpc("admin_set_organization_status", {
+    p_secret: input.secret,
+    p_organization_id: input.organizationId,
+    p_status: input.status,
+    p_device_id: getDeviceId(),
+  });
+}
+
+export async function adminRegenerateEditKey(input: {
+  secret: string;
+  organizationId: string;
+  newEditKeyHash: string;
+}): Promise<{ status: "ok" } | AdminError> {
+  return callRpc("admin_regenerate_edit_key", {
+    p_secret: input.secret,
+    p_organization_id: input.organizationId,
+    p_new_edit_key_hash: input.newEditKeyHash,
+    p_device_id: getDeviceId(),
+  });
+}
+
+export async function adminDeleteOrganization(input: {
+  secret: string;
+  organizationId: string;
+}): Promise<{ status: "ok" } | AdminError> {
+  return callRpc("admin_delete_organization", {
+    p_secret: input.secret,
+    p_organization_id: input.organizationId,
+    p_device_id: getDeviceId(),
+  });
+}
