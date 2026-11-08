@@ -819,7 +819,8 @@ end;
 $$;
 
 -- The admin secret is stored only as a SHA-256 hash. It is provisioned in the
--- database, never sent to the browser.
+-- database, never sent to the browser. Only failed attempts are rate limited,
+-- so normal admin work is never locked out.
 create function public.admin_check(p_secret text, p_device_id text)
 returns jsonb
 language plpgsql
@@ -828,21 +829,14 @@ set search_path = public, extensions, pg_temp
 as $$
 declare
   v_subject text;
+  v_ip_subject text;
   v_limit jsonb;
+  v_ip_limit jsonb;
+  v_retry integer;
   v_valid boolean;
 begin
   if p_secret is null or btrim(p_secret) = '' then
     raise exception 'invalid_admin_secret' using errcode = '22023';
-  end if;
-
-  v_subject := public.actor_hash(p_device_id);
-  v_limit := public.consume_rate_limit('admin', v_subject, null, 5, interval '15 minutes');
-
-  if not coalesce((v_limit ->> 'allowed')::boolean, false) then
-    return jsonb_build_object(
-      'status', 'rate_limited',
-      'retry_after_seconds', (v_limit ->> 'retry_after')::integer
-    );
   end if;
 
   select exists (
@@ -852,11 +846,31 @@ begin
        and secret_hash = public.sha256_hex(btrim(p_secret))
   ) into v_valid;
 
-  if not v_valid then
-    return jsonb_build_object('status', 'invalid_secret');
+  if v_valid then
+    return jsonb_build_object('status', 'ok');
   end if;
 
-  return jsonb_build_object('status', 'ok');
+  v_subject := public.actor_hash(p_device_id);
+  v_ip_subject := public.actor_hash(null);
+
+  v_limit := public.consume_rate_limit('admin', v_subject, null, 8, interval '15 minutes');
+  v_ip_limit := public.consume_rate_limit('admin_ip', v_ip_subject, null, 40, interval '15 minutes');
+
+  if not coalesce((v_limit ->> 'allowed')::boolean, false)
+     or not coalesce((v_ip_limit ->> 'allowed')::boolean, false) then
+    v_retry := greatest(
+      coalesce((v_limit ->> 'retry_after')::integer, 0),
+      coalesce((v_ip_limit ->> 'retry_after')::integer, 0),
+      1
+    );
+
+    return jsonb_build_object(
+      'status', 'rate_limited',
+      'retry_after_seconds', v_retry
+    );
+  end if;
+
+  return jsonb_build_object('status', 'invalid_secret');
 end;
 $$;
 
@@ -906,6 +920,12 @@ begin
             'event_count', (
               select count(*) from public.events e where e.organization_id = o.id
             ),
+            'category_count', (
+              select count(*)
+                from public.categories c
+                join public.events e on e.id = c.event_id
+               where e.organization_id = o.id
+            ),
             'participant_count', (
               select count(*)
                 from public.participants p
@@ -927,6 +947,7 @@ begin
         ),
         '[]'::jsonb
       )
+      from public.organizations o
     )
   );
 end;
