@@ -100,7 +100,7 @@ export function Features() {
             {sampleCategories.map((sample) => (
               <figure key={sample.label}>
                 <CertificateCard
-                  name="Aarohi D."
+                  name="Aashay C."
                   event="MECHMERISE 2026"
                   position={sample.position}
                   category={sample.category}
@@ -139,7 +139,7 @@ export function Features() {
                   Certificate of Achievement
                 </p>
                 <div className="absolute left-[25%] top-[40%] w-[50%] rounded-[2px] border border-dashed border-[#0d5c50] bg-[#e2efe9]/90 px-1 py-1.5 text-center text-[0.55rem] font-medium text-[#0d5c50]">
-                  Aarohi Deshmukh
+                  Aashay Chahande
                 </div>
                 <div className="absolute left-[33%] top-[58%] w-[34%] rounded-[2px] border border-dashed border-[#8a6524] bg-[#f3ead7] px-1 py-0.5 text-center text-[0.5rem] text-[#7a571c]">
                   1st Runner Up

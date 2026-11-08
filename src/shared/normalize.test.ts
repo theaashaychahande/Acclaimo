@@ -25,12 +25,12 @@ const nameCases: Array<[string, string]> = [
   ["Rahul\tSharma", "rahul sharma"],
   ["Sharma, Rahul", "rahul sharma"],
 
-  ["Aarohi Deshmukh", "aarohi deshmukh"],
-  ["DESHMUKH AAROHI", "aarohi deshmukh"],
-  ["deshmukh, aarohi", "aarohi deshmukh"],
-  [" Aarohi   Deshmukh ", "aarohi deshmukh"],
-  ["Aarohi (Deshmukh)", "aarohi deshmukh"],
-  ["AAROHI  DESHMUKH", "aarohi deshmukh"],
+  ["Aashay Chahande", "aashay chahande"],
+  ["CHAHANDE AASHAY", "aashay chahande"],
+  ["chahande, aashay", "aashay chahande"],
+  [" Aashay   Chahande ", "aashay chahande"],
+  ["Aashay (Chahande)", "aashay chahande"],
+  ["AASHAY  CHAHANDE", "aashay chahande"],
 
   ["Sana Kausar Ali", "ali kausar sana"],
   ["Ali Sana Kausar", "ali kausar sana"],

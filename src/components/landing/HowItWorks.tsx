@@ -20,7 +20,7 @@ function SheetPreview() {
           <span>Position</span>
         </div>
         {[
-          ["Aarohi D.", "Winner", "1st"],
+          ["Aashay C.", "Winner", "1st"],
           ["Rohan I.", "Participant", "—"],
           ["Sana K.", "Runner up", "2nd"],
         ].map(([name, category, position]) => (
@@ -89,7 +89,7 @@ function StudentInputPreview() {
     <div className="rounded-[4px] border border-line bg-paper p-2.5">
       <p className="text-[0.55rem] font-medium text-ink-soft">Your full name</p>
       <div className="mt-1 flex items-center rounded-[3px] border border-line-strong bg-surface px-2 py-1.5 text-[0.62rem]">
-        Aarohi Deshmukh
+        Aashay Chahande
       </div>
       <div className="mt-1.5 rounded-[3px] bg-accent px-2 py-1.5 text-center text-[0.6rem] font-medium text-accent-ink">
         Find my certificate
@@ -104,7 +104,7 @@ function StudentDownloadPreview() {
       <div className="flex items-center gap-2.5">
         <div className="w-16 shrink-0">
           <CertificateCard
-            name="Aarohi D."
+            name="Aashay C."
             event="MECHMERISE 26"
             position="Winner"
             category="winner"

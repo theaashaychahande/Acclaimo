@@ -3,7 +3,7 @@ import { Button } from "../ui/Button";
 import { CertificateCard } from "../ui/CertificateCard";
 import { Download, Phone } from "../ui/Icons";
 
-const fullName = "Aarohi Deshmukh";
+const fullName = "Aashay Chahande";
 
 export function CertificateDemo() {
   const [reduced, setReduced] = useState(
@@ -104,7 +104,7 @@ export function CertificateDemo() {
           {note
             ? "Preview only. Downloads work once your event is live."
             : revealed
-              ? "Aarohi's certificate is ready."
+              ? "Aashay's certificate is ready."
               : "Looking up your name…"}
         </p>
 
