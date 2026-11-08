@@ -28,4 +28,4 @@ Organizers can now upload their own certificate image for each category and drag
 
 Phase 4 (spreadsheet import) and the on-device pilot are still to come. Until the importer ships, participants are added through the paste box.
 
-The platform admin console at `/admin` is live: unlock it with the admin secret, see organization and category counts (never participant names), disable or enable a link, delete an organization, or issue a new edit key. Retention cleanup, security notes, operations notes, the keep-alive workflow, and the Vercel security headers are in place. Remaining Phase 7 work is device testing, the real pilot, and the spreadsheet importer above.
+The platform admin console at `/admin` is live: unlock it with the admin secret, see organization and category counts (never participant names), disable or enable a link, delete an organization, or issue a new edit key. Retention cleanup, security notes, operations notes, the keep-alive workflow, and the Vercel security headers are in place. Remaining work is device testing, the real pilot, and the spreadsheet importer above.
