@@ -30,6 +30,12 @@ database allows, not because anything is hidden.
 Plain participant names, student emails, and student accounts are never
 stored. Acclaimo has no student login.
 
+Spreadsheet imports follow the same rule. The organizer's browser parses the
+file, validates it, detects duplicate names, and hashes every name and
+identifier locally. The request contains only hashes, category ids, and
+position text. The original file and the typed names are never uploaded to
+Acclaimo or Supabase, and the browser keeps no copy after the page is closed.
+
 Hashing is not encryption. The salt is public, so anyone who can guess a name
 can confirm whether that person is in an event. Acclaimo is a distribution
 tool, not an identity check, and the public pages say so.

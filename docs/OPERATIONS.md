@@ -111,7 +111,26 @@ function cannot remove Storage objects, so delete the template files for events
 removed by cleanup through the Storage API or dashboard. Replacing an image
 does remove the previous object automatically.
 
-## 7. Routine checks
+## 7. Importing a participant list
+
+The importer in the dashboard accepts `.csv` and `.xlsx` files up to 2 MB and
+5,000 rows. Old `.xls` files must be re-saved as `.xlsx` or `.csv` first. The
+file is read in the organizer's browser: only name hashes, category ids, and
+position text are sent to Supabase.
+
+- `Name` is required. `Identifier`, `Category`, and `Position` are optional.
+  Use an identifier when two participants share a name.
+- Rows with a blank category go to the event's default category.
+- Every distinct category value in the file must be mapped to an existing
+  category, a new one, or the default. An event can hold at most six categories.
+- Use **Replace the whole list** when re-importing a corrected file. The
+  database validates every row before deleting the old list, so a failed
+  replace changes nothing. Use **Add** only for genuinely new people.
+- Check the per-category counts on the confirmation screen against the source
+  file before importing, then look up one name from each category on the
+  student link.
+
+## 8. Routine checks
 
 - Open `/admin` and check the organization list after a busy event.
 - Open the designer, replace a test image, reload, and confirm the draft preview
@@ -124,7 +143,7 @@ does remove the previous object automatically.
 - If an organizer loses an edit key, issue a new one from `/admin` after
   checking their identity out of band. The old key stops working immediately.
 
-## 8. Rotating a publishable key
+## 9. Rotating a publishable key
 
 If the publishable key is compromised, rotate it in the Supabase dashboard,
 update `VITE_SUPABASE_ANON_KEY` in Vercel, and redeploy. The key is not a login;
