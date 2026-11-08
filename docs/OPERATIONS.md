@@ -76,6 +76,12 @@ select cron.schedule(
 );
 ```
 
+Confirm it registered before moving on:
+
+```sql
+select jobid, schedule, active from cron.job where jobname = 'acclaimo-cleanup';
+```
+
 The function removes events, categories, and participant hashes. Template files
 must be removed through the Storage API when template upload ships; the SQL
 function cannot delete the underlying object store file.
