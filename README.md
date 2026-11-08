@@ -24,4 +24,6 @@ Phase 2 is complete: the shared normalization and hashing core is tested, and a 
 
 The organizer and student flows now work end to end against the live database: create an organization, save the one-time edit key, log in, create events and categories, add participants with optional position text, publish, share the link, look up a name, and download the certificate. Pausing, extending, and deleting an event, plus the download and not-found counters, are wired too.
 
-Phase 4 (spreadsheet import) and Phase 5 (template upload and the position designer) are still to come. Until then, participants are added through a paste box and certificates use a built-in design. Phase 7 (admin tools, retention, and launch hardening) comes after those.
+Phase 4 (spreadsheet import) and Phase 5 (template upload and the position designer) are still to come. Until then, participants are added through a paste box and certificates use a built-in design.
+
+The platform admin console at `/admin` is live: unlock it with the admin secret, see organization and category counts (never participant names), disable or enable a link, delete an organization, or issue a new edit key. Retention cleanup, security notes, operations notes, the keep-alive workflow, and the Vercel security headers are in place. Remaining Phase 7 work is device testing, the real pilot, and the import/template features above.

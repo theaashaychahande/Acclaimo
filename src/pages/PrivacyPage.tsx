@@ -56,9 +56,10 @@ export function PrivacyPage() {
           <section className="border-t border-line pt-6">
             <h2 className="font-serif text-2xl font-semibold">Deletion and expiry</h2>
             <p className="mt-4 text-[0.98rem] leading-relaxed text-muted">
-              Organizers can delete a participant list, an event, or the whole organization. Deleting
-              removes the related hashes, categories, and templates. Events expire on the date the
-              organizer chooses. Expired events are cleaned up automatically after 90 days.
+              Organizers can clear a participant list or delete an event. The platform admin can
+              disable or delete an organization. Deleting removes the related hashes, categories,
+              and templates. Events stop working on the expiry date the organizer chooses, and the
+              retention job removes them after 90 days.
             </p>
           </section>
 

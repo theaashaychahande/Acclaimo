@@ -4,30 +4,30 @@ import { ArrowRight } from "../components/ui/Icons";
 
 const guides = [
   {
-    title: "Make the certificate design",
+    title: "Understand the design",
     points: [
-      "Use an A4 landscape image, at least 1754 × 1240 pixels.",
-      "Leave an empty area where the name will go.",
+      "Certificates currently use Acclaimo's built-in layout.",
+      "Template upload and the position designer are the next piece of work.",
+      "When it ships, use an A4 landscape image at least 1754 × 1240 pixels.",
       "Keep fixed words such as “has secured” in the image itself.",
-      "PNG and JPG both work, up to 5 MB.",
     ],
   },
   {
-    title: "Prepare the spreadsheet",
+    title: "Add your participants",
     points: [
-      "One row per participant, with a Name column.",
-      "Add Identifier when two people share a name.",
-      "Add Category and Position columns for different designs and awards.",
-      "CSV and Excel are supported, up to 5,000 rows and 2 MB.",
+      "Open an event and paste one name per line.",
+      "Add a comma and the position text to print it, for example Aashay Chahande, Winner.",
+      "Names are hashed in the browser before they reach the server.",
+      "Spreadsheet import is coming next; the paste box is the current path.",
     ],
   },
   {
     title: "Share the link",
     points: [
-      "Publish the event and copy its student link.",
+      "Publish the event and copy your student link from the dashboard.",
       "Send it to the WhatsApp group, or use the share button.",
-      "Students type their name and download the certificate.",
-      "Pause or change the expiry date from the dashboard.",
+      "Students type their name and download the certificate on their own device.",
+      "Pause or change the expiry date from the dashboard at any time.",
     ],
   },
 ];
