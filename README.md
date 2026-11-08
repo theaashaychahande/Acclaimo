@@ -3,7 +3,6 @@
 Acclaimo is a free way to hand out event certificates. An organizer shares one link, students type their name, and the certificate is generated on their own device.
 
 ## What it does
-
 - One private link per organization, showing all of its live events
 - Name lookup that ignores extra spaces, capitalization, and reversed first and last names
 - Certificates downloaded on the student's device
