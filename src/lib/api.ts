@@ -464,6 +464,106 @@ export async function addParticipants(input: {
   });
 }
 
+/**
+ * Replaces the whole list in one transaction. The database validates every
+ * row before deleting the old list, so a failed import changes nothing.
+ */
+export async function replaceParticipants(input: {
+  editKeyHash: string;
+  eventId: string;
+  rows: ParticipantRow[];
+}): Promise<
+  | { status: "ok"; inserted: number; skipped: number }
+  | { status: "invalid_key" }
+  | { status: "error"; code: string }
+> {
+  return callRpc("organizer_replace_participants", {
+    p_edit_key_hash: input.editKeyHash,
+    p_event_id: input.eventId,
+    p_rows: input.rows,
+  });
+}
+
+export async function updateParticipant(input: {
+  editKeyHash: string;
+  eventId: string;
+  nameHash: string;
+  identifierHash: string | null;
+  categoryId: string;
+  positionText: string | null;
+}): Promise<
+  | { status: "ok"; updated: number }
+  | { status: "invalid_key" }
+  | { status: "error"; code: string }
+> {
+  return callRpc("organizer_update_participant", {
+    p_edit_key_hash: input.editKeyHash,
+    p_event_id: input.eventId,
+    p_name_hash: input.nameHash,
+    p_identifier_hash: input.identifierHash,
+    p_category_id: input.categoryId,
+    p_position_text: input.positionText,
+  });
+}
+
+export async function removeParticipant(input: {
+  editKeyHash: string;
+  eventId: string;
+  nameHash: string;
+  identifierHash: string | null;
+}): Promise<
+  | { status: "ok"; removed: number }
+  | { status: "invalid_key" }
+  | { status: "error"; code: string }
+> {
+  return callRpc("organizer_remove_participant", {
+    p_edit_key_hash: input.editKeyHash,
+    p_event_id: input.eventId,
+    p_name_hash: input.nameHash,
+    p_identifier_hash: input.identifierHash,
+  });
+}
+
+export async function renameCategory(input: {
+  editKeyHash: string;
+  categoryId: string;
+  label: string;
+}): Promise<
+  { status: "ok" } | { status: "invalid_key" } | { status: "error"; code: string }
+> {
+  return callRpc("organizer_rename_category", {
+    p_edit_key_hash: input.editKeyHash,
+    p_category_id: input.categoryId,
+    p_label: input.label,
+  });
+}
+
+export async function reorderCategories(input: {
+  editKeyHash: string;
+  eventId: string;
+  categoryIds: string[];
+}): Promise<
+  { status: "ok" } | { status: "invalid_key" } | { status: "error"; code: string }
+> {
+  return callRpc("organizer_reorder_categories", {
+    p_edit_key_hash: input.editKeyHash,
+    p_event_id: input.eventId,
+    p_category_ids: input.categoryIds,
+  });
+}
+
+export async function setDefaultCategory(input: {
+  editKeyHash: string;
+  categoryId: string;
+}): Promise<
+  { status: "ok" } | { status: "invalid_key" } | { status: "error"; code: string }
+> {
+  return callRpc("organizer_set_default_category", {
+    p_edit_key_hash: input.editKeyHash,
+    p_category_id: input.categoryId,
+  });
+}
+
 export async function clearParticipants(input: {
   editKeyHash: string;
   eventId: string;
