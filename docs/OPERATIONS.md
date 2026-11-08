@@ -16,6 +16,11 @@ supabase db push
 The migrations create the tables, revoke direct access, add the public RPCs,
 and create the private `templates` storage bucket.
 
+Acclaimo does not use Supabase Auth. In the dashboard, open Authentication →
+Sign In / Providers and disable email signups and anonymous sign-ins. The last
+migration already revokes default function privileges, so a new helper stays
+private until it is granted explicitly.
+
 ## 2. Create the admin secret
 
 The admin page is useless until `admin_config` has one row. Pick a long random
@@ -42,7 +47,7 @@ the secret in memory only, so a reload asks for it again.
    - `VITE_SUPABASE_ANON_KEY`
 4. Deploy.
 
-`vercel.json` already adds the React Router rewrite and a Content-Security
+`vercel.json` already adds the React Router rewrite, HSTS, and a Content-Security
 Policy that allows only the app itself, Google Fonts, and the Supabase project.
 If you move to a custom Supabase domain, update `connect-src` and `img-src`.
 
@@ -59,7 +64,8 @@ enabling it:
 - `SUPABASE_ANON_KEY`
 
 The publishable key is safe in a public repository, but repository secrets keep
-the workflow reusable by anyone who forks the project.
+the workflow reusable by anyone who forks the project. The workflow runs with
+`contents: read` and nothing else.
 
 ## 5. Schedule retention
 
@@ -82,7 +88,9 @@ Confirm it registered before moving on:
 select jobid, schedule, active from cron.job where jobname = 'acclaimo-cleanup';
 ```
 
-The function removes events, categories, and participant hashes. Template files
+The function removes events, categories, and participant hashes. It also trims
+`rate_limits` after one day and `lookup_streaks` after 30 days, so repeated
+requests with random device ids cannot grow those tables forever. Template files
 must be removed through the Storage API when template upload ships; the SQL
 function cannot delete the underlying object store file.
 
