@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoticePanel, PageIntro } from "../components/layout/PageIntro";
 import { buttonClasses } from "../components/ui/Button";
-import { Check, LinkIcon, Plus, Send } from "../components/ui/Icons";
+import { Check, CursorBox, LinkIcon, Plus, Send } from "../components/ui/Icons";
 import {
   addParticipants,
   clearParticipants,
@@ -444,11 +444,15 @@ function EventCard({
   onNotice: (notice: Notice) => void;
 }) {
   const [busy, setBusy] = useState(false);
+  const navigate = useNavigate();
   const primaryCategory = event.default_category_id ?? event.categories[0]?.id ?? null;
   const participants = event.categories.reduce(
     (total, category) => total + category.participant_count,
     0,
   );
+  const missingDesigns = event.categories.filter(
+    (category) => !category.template_path,
+  ).length;
 
   const changeStatus = async (status: "live" | "paused") => {
     if (busy) return;
@@ -576,6 +580,15 @@ function EventCard({
         </p>
       )}
 
+      {missingDesigns > 0 ? (
+        <p className="mt-3 text-sm text-danger">
+          {missingDesigns === 1
+            ? "1 category is still using the built-in certificate design."
+            : `${missingDesigns} categories are still using the built-in certificate design.`}{" "}
+          Upload their images in the designer.
+        </p>
+      ) : null}
+
       {primaryCategory ? (
         <ParticipantPanel
           event={event}
@@ -588,6 +601,17 @@ function EventCard({
       ) : null}
 
       <div className="mt-5 flex flex-wrap gap-2 border-t border-line pt-4">
+        {event.categories.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => navigate(`/dashboard/design/${event.id}`)}
+            className={buttonClasses({ variant: "secondary", size: "sm" })}
+          >
+            <CursorBox className="size-4" aria-hidden="true" />
+            Design certificates
+          </button>
+        ) : null}
+
         {event.status === "live" ? (
           <button
             type="button"

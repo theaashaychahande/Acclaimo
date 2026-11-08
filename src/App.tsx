@@ -12,6 +12,7 @@ import { LandingPage } from "./pages/LandingPage";
 import { CreatePage } from "./pages/CreatePage";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { EventDesignPage } from "./pages/EventDesignPage";
 import { StudentPage } from "./pages/StudentPage";
 import { AdminPage } from "./pages/AdminPage";
 import { HelpPage } from "./pages/HelpPage";
@@ -56,7 +57,11 @@ function RouteEffects() {
   useEffect(() => {
     document.title =
       titles[location.pathname] ??
-      (location.pathname.startsWith("/o/") ? "Your certificate — Acclaimo" : "Page not found — Acclaimo");
+      (location.pathname.startsWith("/o/")
+        ? "Your certificate — Acclaimo"
+        : location.pathname.startsWith("/dashboard/design/")
+          ? "Design certificates — Acclaimo"
+          : "Page not found — Acclaimo");
   }, [location.pathname]);
 
   useEffect(() => {
@@ -92,6 +97,7 @@ export function App() {
           <Route path="create" element={<CreatePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="dashboard/design/:eventId" element={<EventDesignPage />} />
           <Route path="o/:linkId" element={<StudentPage />} />
           <Route path="admin" element={<AdminPage />} />
           <Route path="help" element={<HelpPage />} />
