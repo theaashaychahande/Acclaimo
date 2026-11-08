@@ -1,5 +1,7 @@
 import { getSupabase } from "./supabase";
 import { getDeviceId } from "./device";
+import { getSupabaseConfig } from "./env";
+import { blobToBase64 } from "./template";
 import type { DesignSettings } from "./certificate";
 
 export class RpcError extends Error {
@@ -262,7 +264,11 @@ export async function createCategory(input: {
   sortOrder: number;
   templatePath?: string | null;
   designSettings?: DesignSettings;
-}): Promise<{ status: "ok" } | { status: "invalid_key" } | { status: "error"; code: string }> {
+}): Promise<
+  | { status: "ok"; category: { id: string } }
+  | { status: "invalid_key" }
+  | { status: "error"; code: string }
+> {
   return callRpc("organizer_create_category", {
     p_edit_key_hash: input.editKeyHash,
     p_event_id: input.eventId,
@@ -271,6 +277,151 @@ export async function createCategory(input: {
     p_template_path: input.templatePath ?? null,
     p_design_settings: input.designSettings ?? {},
   });
+}
+
+export async function updateCategory(input: {
+  editKeyHash: string;
+  categoryId: string;
+  templatePath: string | null;
+  designSettings: DesignSettings;
+}): Promise<
+  { status: "ok" } | { status: "invalid_key" } | { status: "error"; code: string }
+> {
+  return callRpc("organizer_update_category", {
+    p_edit_key_hash: input.editKeyHash,
+    p_category_id: input.categoryId,
+    p_template_path: input.templatePath,
+    p_design_settings: input.designSettings,
+  });
+}
+
+export async function deleteCategory(input: {
+  editKeyHash: string;
+  categoryId: string;
+}): Promise<
+  { status: "ok" } | { status: "invalid_key" } | { status: "error"; code: string }
+> {
+  return callRpc("organizer_delete_category", {
+    p_edit_key_hash: input.editKeyHash,
+    p_category_id: input.categoryId,
+  });
+}
+
+export type TemplateUploadResponse =
+  | { status: "ok"; template_path: string }
+  | { status: "invalid_key" }
+  | { status: "error"; code: string };
+
+/**
+ * Sends the compressed image to the upload function. That function checks the
+ * edit key hash, confirms the category belongs to the caller, and writes to
+ * the private bucket with the service role. The service key never reaches the
+ * browser.
+ */
+export async function uploadTemplate(input: {
+  editKeyHash: string;
+  eventId: string;
+  categoryId: string;
+  blob: Blob;
+  contentType: "image/png" | "image/jpeg" | "image/webp";
+}): Promise<TemplateUploadResponse> {
+  const { url, anonKey } = getSupabaseConfig();
+  const dataBase64 = await blobToBase64(input.blob);
+
+  let response: Response;
+
+  try {
+    response = await fetch(`${url}/functions/v1/upload-template`, {
+      method: "POST",
+      headers: {
+        apikey: anonKey,
+        Authorization: `Bearer ${anonKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        edit_key_hash: input.editKeyHash,
+        event_id: input.eventId,
+        category_id: input.categoryId,
+        content_type: input.contentType,
+        data_base64: dataBase64,
+      }),
+    });
+  } catch {
+    return { status: "error", code: "network_error" };
+  }
+
+  let body: { status?: string; code?: string; template_path?: string } | null = null;
+
+  try {
+    body = await response.json();
+  } catch {
+    body = null;
+  }
+
+  if (response.status === 403 && body?.status === "invalid_key") {
+    return { status: "invalid_key" };
+  }
+
+  if (!response.ok || body?.status !== "ok" || !body.template_path) {
+    return { status: "error", code: body?.code ?? "upload_failed" };
+  }
+
+  return { status: "ok", template_path: body.template_path };
+}
+
+export type TemplateSignResponse =
+  | { status: "ok"; url: string }
+  | { status: "invalid_key" }
+  | { status: "error"; code: string };
+
+/**
+ * Draft templates are not readable through the normal storage policy, so the
+ * designer asks the upload function for a short-lived signed URL. That function
+ * confirms the category belongs to the caller before signing.
+ */
+export async function signTemplate(input: {
+  editKeyHash: string;
+  categoryId: string;
+}): Promise<TemplateSignResponse> {
+  const { url, anonKey } = getSupabaseConfig();
+
+  let response: Response;
+
+  try {
+    response = await fetch(`${url}/functions/v1/upload-template`, {
+      method: "POST",
+      headers: {
+        apikey: anonKey,
+        Authorization: `Bearer ${anonKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "sign",
+        edit_key_hash: input.editKeyHash,
+        category_id: input.categoryId,
+      }),
+    });
+  } catch {
+    return { status: "error", code: "network_error" };
+  }
+
+  let body: { status?: string; code?: string; url?: string } | null = null;
+
+  try {
+    body = await response.json();
+  } catch {
+    body = null;
+  }
+
+  if (response.status === 403 && body?.status === "invalid_key") {
+    return { status: "invalid_key" };
+  }
+
+  if (!response.ok || body?.status !== "ok" || !body.url) {
+    return { status: "error", code: body?.code ?? "sign_failed" };
+  }
+
+  return { status: "ok", url: body.url };
 }
 
 export async function setEventStatus(input: {

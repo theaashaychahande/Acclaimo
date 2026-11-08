@@ -25,6 +25,17 @@ export type DesignSettings = {
   position?: Partial<TextBox> & { enabled?: boolean };
 };
 
+export const CERTIFICATE_FONTS = [
+  { label: "Serif", value: '"Source Serif 4", "Iowan Old Style", Georgia, serif' },
+  { label: "Sans", value: '"Public Sans", ui-sans-serif, system-ui, sans-serif' },
+  {
+    label: "Devanagari",
+    value: '"Noto Sans Devanagari", "Public Sans", sans-serif',
+  },
+] as const;
+
+export const MAX_TEMPLATE_EDGE = 1800;
+
 export type CertificateInput = {
   template: HTMLImageElement | null;
   design: DesignSettings;
@@ -35,7 +46,7 @@ export type CertificateInput = {
   categoryLabel: string;
 };
 
-const MAX_EDGE = 1800;
+const MAX_EDGE = MAX_TEMPLATE_EDGE;
 const PAPER = "#fffdf8";
 const INK = "#18211e";
 const MUTED = "#626b65";
@@ -75,6 +86,58 @@ function positionDefaults(height: number): TextBox {
     letterSpacing: 1,
     casing: "upper",
     wrap: false,
+  };
+}
+
+/**
+ * The stored font sizes are pixels on the rendered canvas. This returns the
+ * canvas size the renderer will use, so the designer can show the same scale.
+ */
+export function renderedCanvasSize(width: number, height: number): {
+  width: number;
+  height: number;
+} {
+  const scale = Math.min(1, MAX_EDGE / Math.max(width, height));
+
+  return {
+    width: Math.max(1, Math.round(width * scale)),
+    height: Math.max(1, Math.round(height * scale)),
+  };
+}
+
+/** Starting boxes for a category that has not been designed yet. */
+export function defaultCategoryDesign(width: number, height: number): DesignSettings {
+  const rendered = renderedCanvasSize(width, height);
+
+  return {
+    name: nameDefaults(rendered.height),
+    position: { ...positionDefaults(rendered.height), enabled: true },
+  };
+}
+
+export type ResolvedDesign = {
+  name: TextBox;
+  position: TextBox & { enabled: boolean };
+};
+
+/**
+ * Fills in anything a saved design left out, using the same defaults the
+ * renderer falls back to. The designer and the student view therefore agree
+ * on every value.
+ */
+export function resolveDesign(
+  design: DesignSettings | null | undefined,
+  width: number,
+  height: number,
+): ResolvedDesign {
+  const base = defaultCategoryDesign(width, height);
+
+  return {
+    name: resolveBox(design?.name, base.name as TextBox),
+    position: {
+      ...resolveBox(design?.position, base.position as TextBox),
+      enabled: design?.position?.enabled ?? true,
+    },
   };
 }
 
@@ -281,6 +344,25 @@ function drawDefaultBackground(
 export async function renderCertificate(
   input: CertificateInput,
 ): Promise<HTMLCanvasElement> {
+  // A custom template may use a font that is still loading. Waiting here keeps
+  // the preview and the downloaded image from measuring with the fallback.
+  if (typeof document !== "undefined" && document.fonts?.ready) {
+    try {
+      const families = new Set(
+        [input.design.name?.fontFamily, input.design.position?.fontFamily].filter(
+          (family): family is string => Boolean(family),
+        ),
+      );
+
+      await Promise.all(
+        [...families].map((family) => document.fonts.load(`600 16px ${family}`)),
+      );
+      await document.fonts.ready;
+    } catch {
+      // A blocked font API should not stop the certificate from rendering.
+    }
+  }
+
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
@@ -290,10 +372,10 @@ export async function renderCertificate(
 
   const sourceWidth = input.template?.naturalWidth || 1600;
   const sourceHeight = input.template?.naturalHeight || Math.round(1600 / Math.SQRT2);
-  const scale = Math.min(1, MAX_EDGE / Math.max(sourceWidth, sourceHeight));
+  const rendered = renderedCanvasSize(sourceWidth, sourceHeight);
 
-  canvas.width = Math.max(1, Math.round(sourceWidth * scale));
-  canvas.height = Math.max(1, Math.round(sourceHeight * scale));
+  canvas.width = rendered.width;
+  canvas.height = rendered.height;
 
   const width = canvas.width;
   const height = canvas.height;
