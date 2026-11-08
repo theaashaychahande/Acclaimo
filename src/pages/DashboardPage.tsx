@@ -16,6 +16,7 @@ import {
   type ParticipantRow,
 } from "../lib/api";
 import { clearSession, loadSession, type OrganizerSession } from "../lib/session";
+import { describeError } from "../lib/errors";
 import { hashName } from "../shared";
 
 type ReadyData = Extract<DashboardResponse, { status: "ok" }>;
@@ -564,7 +565,8 @@ function EventCard({
               key={category.id}
               className="rounded-full border border-line bg-surface-muted px-3 py-1 text-xs text-muted"
             >
-              {category.label}: {category.participant_count}
+              {category.label}: {category.participant_count} people · {category.downloads}{" "}
+              downloads
             </li>
           ))}
         </ul>
@@ -824,9 +826,7 @@ function expiryInDays(days: number): string {
 }
 
 function errorMessage(error: unknown): string {
-  return error instanceof Error && error.message
-    ? error.message
-    : "Something went wrong. Please try again.";
+  return describeError(error, "Something went wrong. Please try again.");
 }
 
 function statusMessage(code: string): string {
