@@ -43,10 +43,15 @@ tool, not an identity check, and the public pages say so.
   edit-key hash.
 - There are no public `select`, `insert`, `update`, or `delete` policies on
   the data tables. Direct PostgREST table access fails.
-- Template files live in a private Storage bucket. The browser can only create
-  a short-lived signed URL when a security-definer helper confirms the file
-  belongs to a live event of an active organization. Upload, replace, and
-  delete are service-role only.
+- Template files live in a private Storage bucket. Organizers upload through the
+  `upload-template` Edge Function. It checks the edit-key hash with the service
+  role, confirms the event and category belong to that organization, validates
+  the image bytes, and only then writes the object and the category path. The
+  service key never reaches the browser.
+- The same function signs a short-lived URL for a draft preview after the same
+  ownership check. The normal Storage policy still only signs templates for
+  live events, so a draft or paused event does not expose its design publicly.
+  Upload, replace, and delete remain service-role only.
 - Default function privileges in the `public` schema are revoked, so a newly
   added helper is not callable through PostgREST until it is granted on purpose.
 - Supabase Auth is not used. Email signups and anonymous sign-ins are disabled
@@ -95,6 +100,9 @@ the real protection.
   Content-Security-Policy.
 - Backend: Supabase (Postgres, RPCs, Storage). Apply the files in
   `supabase/migrations` in order.
+- Deploy the `upload-template` Edge Function with JWT verification off. It
+  validates the edit-key hash itself and reads the service key from the
+  function environment, never from a `VITE_` variable.
 - Keep Supabase Auth signups disabled; Acclaimo never creates auth users.
 - Scheduled cleanup runs nightly through `pg_cron` and also trims the
   rate-limit and lookup-strike tables so they cannot grow without bound.
